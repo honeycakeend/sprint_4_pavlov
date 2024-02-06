@@ -39,4 +39,19 @@ public class MainPage extends Base{
         WebElement element = driver.findElement(faqSection);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
+
+    //клик по вопросу в FAQ по номеру вопроса
+    public void clickQuestFaq(int numberQuest){
+        driver.findElement(By.id("accordion__heading-" + numberQuest)).click();
+    }
+
+    //получение актуального вопроса FAQ по номеру вопроса
+    public String actualQuestion(int numberQuest){
+        return driver.findElement(By.id("accordion__heading-" + numberQuest)).getText();
+    }
+
+    //получение актуального ответа FAQ по номеру вопроса
+    public String actualAnswer(int numberQuest){
+        return driver.findElement(By.id("accordion__panel-" + numberQuest)).getText();
+    }
 }

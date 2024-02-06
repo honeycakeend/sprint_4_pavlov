@@ -8,46 +8,47 @@ public class OrderPage extends Base{
     public OrderPage (WebDriver driver) {
         super(driver);
     }
+    public static final String URL_ORDER = "https://qa-scooter.praktikum-services.ru/order";
 
     //Имя
-    public final By name = By.xpath(".//input[@placeholder='* Имя']");
+    private final By name = By.xpath(".//input[@placeholder='* Имя']");
 
     //Фамилия
-    public final By secondName = By.xpath(".//input[@placeholder='* Фамилия']");
+    private final By secondName = By.xpath(".//input[@placeholder='* Фамилия']");
 
     //Адрес
-    public final By address = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
+    private final By address = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
 
     //метро
-    public final By metro = By.xpath(".//input[@placeholder='* Станция метро']");
+    private final By metro = By.xpath(".//input[@placeholder='* Станция метро']");
 
     //телефон
-    public final By phone = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
+    private final By phone = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
 
     //кнопка Далее
-    public final By buttonNext = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
+    private final By buttonNext = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']");
 
     //когда привезти
-    public final By whereDeliverOrder = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
+    private final By whereDeliverOrder = By.xpath(".//input[@placeholder='* Когда привезти самокат']");
 
     //срок аренды
-    public final By rentalPeriod = By.xpath(".//span[@class='Dropdown-arrow']");
+    private final By rentalPeriod = By.xpath(".//span[@class='Dropdown-arrow']");
 
     //чёрный цвет самоката
-    public final By colorBlack = By.id("black");
+    private final By colorBlack = By.id("black");
 
     //комментарий для курьера
-    public final By commentOrder = By.xpath(".//input[@placeholder='Комментарий для курьера']");
+    private final By commentOrder = By.xpath(".//input[@placeholder='Комментарий для курьера']");
 
     //кнопка подтверждения заказа
-    public final By buttonAgreeOrder =
+    private final By buttonAgreeOrder =
             By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Заказать']");
 
     //кнопка Да на экране подтверждения заказа
-    public final By buttonYes = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Да']");
+    private final By buttonYes = By.xpath(".//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and text()='Да']");
 
     //форма успешного оформления
-    public final By orderAgree = By.className("Order_ModalHeader__3FDaJ");
+    private final By orderAgree = By.className("Order_ModalHeader__3FDaJ");
 
     public void clickButtonYes (){
         driver.findElement(buttonYes).click();
@@ -57,4 +58,31 @@ public class OrderPage extends Base{
         driver.findElement(buttonAgreeOrder).click();
     }
 
+    public void clickButtonNext(){
+        driver.findElement(buttonNext).click();
+    }
+
+    //заполнение данных юзера в форме
+    public void userDataEntry(String name, String secondName, String adress, int stantionMetro, String phone){
+        driver.findElement(this.name).sendKeys(name);
+        driver.findElement(this.secondName).sendKeys(secondName);
+        driver.findElement(this.address).sendKeys(adress);
+        driver.findElement(this.metro).click();
+        driver.findElement(By.xpath(".//ul[@class='select-search__options']/li[@data-value = '" + stantionMetro +"']")).click();
+        driver.findElement(this.phone).sendKeys(phone);
+    }
+
+    //заполнение данных по самокату
+    public void scooterDataEntry(String userWhereDeliverOrder, String userRentalPeriod, String userComment){
+        driver.findElement(this.whereDeliverOrder).sendKeys(userWhereDeliverOrder);
+        driver.findElement(this.rentalPeriod).click();
+        driver.findElement(By.xpath(".//div[@class = 'Dropdown-option' and text() = '" + userRentalPeriod + "']")).click();
+        driver.findElement(this.colorBlack).click();
+        driver.findElement(this.commentOrder).sendKeys(userComment);
+    }
+
+    //текст формы успешного оформления
+    public String textAgreeForm(){
+        return driver.findElement(orderAgree).getText();
+    }
 }

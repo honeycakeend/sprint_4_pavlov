@@ -35,7 +35,7 @@ public class BaseTest {
 
     //настройка браузера для теста
     private WebDriver getDriver(){
-        String driverType = "chrome"; //для firefox - "ff", для chrome = "chrome"
+        String driverType = "ff"; //для firefox - "ff", для chrome = "chrome"
         switch (driverType) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();

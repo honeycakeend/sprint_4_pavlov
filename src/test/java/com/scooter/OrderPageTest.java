@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 
 @RunWith(Parameterized.class)
 public class OrderPageTest extends BaseTest{
@@ -51,30 +50,28 @@ public class OrderPageTest extends BaseTest{
         MainPage mainPage = new MainPage(driver);
         mainPage.clickButtonOrderHeader();
 
+        OrderPage orderPage = new OrderPage(driver);
 
         //заполнение данных юзера
-        OrderPage orderPage = new OrderPage(driver);
-        driver.findElement(orderPage.name).sendKeys(userName);
-        driver.findElement(orderPage.secondName).sendKeys(userSecondName);
-        driver.findElement(orderPage.address).sendKeys(userAdress);
-        driver.findElement(orderPage.metro).click();
-        driver.findElement(By.xpath(".//ul[@class='select-search__options']/li[@data-value = '" + stantionMetro +"']")).click();
-        driver.findElement(orderPage.phone).sendKeys(userPhone);
-
-        driver.findElement(orderPage.buttonNext).click();
+        orderPage.userDataEntry(userName, userSecondName, userAdress, stantionMetro, userPhone);
+        orderPage.clickButtonNext();
 
         //заполнение данных по самокату
-        driver.findElement(orderPage.whereDeliverOrder).sendKeys(userWhereDeliverOrder);
-        driver.findElement(orderPage.rentalPeriod).click();
-        driver.findElement(By.xpath(".//div[@class = 'Dropdown-option' and text() = '" + userRentalPeriod + "']")).click();
-        driver.findElement(orderPage.colorBlack).click();
-        driver.findElement(orderPage.commentOrder).sendKeys(userComment);
-
+        orderPage.scooterDataEntry(userWhereDeliverOrder, userRentalPeriod, userComment);
 
         //подтверждение заказа и проверка оформления
         orderPage.clickOrderAgree();
         orderPage.clickButtonYes();
-        String agreeText = driver.findElement(orderPage.orderAgree).getText();
-        Assert.assertTrue(agreeText.contains("Заказ оформлен"));
+        Assert.assertTrue(orderPage.textAgreeForm().contains("Заказ оформлен"));
+    }
+
+    //проверка перехода на страницу заказа с кнопки в боди
+    @Test
+    public void testNavigatingThroughButtons(){
+        driver.get(MainPage.URL);
+        MainPage mainPage = new MainPage(driver);
+
+        mainPage.clickButtonOrderBody();
+        Assert.assertEquals(OrderPage.URL_ORDER, driver.getCurrentUrl());
     }
 }
